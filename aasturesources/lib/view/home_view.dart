@@ -1,3 +1,5 @@
+import 'package:aasturesources/view/gpa_calculator.dart';
+import 'package:aasturesources/view/lecture_note.dart';
 import 'package:aasturesources/view/pdf_list_view.dart';
 import 'package:aasturesources/view/upload_file.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,8 @@ int currentViewIndex = 0;
 final screens = [
   const MyPDFListView(),
   const MyUploadFileView(),
+  const MyLectureNoteView(),
+  const MyGPACalculatorView(),
 ];
 
 class _MyHomeViewState extends State<MyHomeView> {
