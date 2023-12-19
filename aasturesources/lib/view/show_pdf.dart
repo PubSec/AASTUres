@@ -189,8 +189,8 @@ class _MyLogicPatickPDFViewState extends State<MyLogicPatickPDFView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SfPdfViewer.asset(
-        'assets/pdfs/Patrick2012.pdf',
+      body: SfPdfViewer.network(
+        'https://firebasestorage.googleapis.com/v0/b/aastumodulecloud.appspot.com/o/resources%2FPatrick2012.pdf?alt=media&token=f9d61805-e80e-442c-ad7d-197f57d897ba',
         controller: _pdfViewerController,
       ),
     );
@@ -219,6 +219,36 @@ class _MyPhysicalFitPDFViewState extends State<MyPhysicalFitPDFView> {
       appBar: AppBar(),
       body: SfPdfViewer.network(
         'https://firebasestorage.googleapis.com/v0/b/aastumodulecloud.appspot.com/o/modules%2FPhysical%20Fitness%20Module.pdf?alt=media&token=efa93d14-5946-4c35-97d5-cd50739c24a0',
+        controller: _pdfViewerController,
+      ),
+    );
+  }
+}
+
+class MyLogicLectureChapter1View extends StatefulWidget {
+  const MyLogicLectureChapter1View({super.key});
+
+  @override
+  State<MyLogicLectureChapter1View> createState() =>
+      _MyLogicLectureChapter1ViewState();
+}
+
+class _MyLogicLectureChapter1ViewState
+    extends State<MyLogicLectureChapter1View> {
+  final PdfViewerController _pdfViewerController = PdfViewerController();
+
+  @override
+  void initState() {
+    _pdfViewerController;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: SfPdfViewer.network(
+        'https://firebasestorage.googleapis.com/v0/b/aastumodulecloud.appspot.com/o/lecture_notes%2Flogic_lecture_note_1.pdf?alt=media&token=e8eaed33-e134-4d02-bd37-451ec90bae8f',
         controller: _pdfViewerController,
       ),
     );

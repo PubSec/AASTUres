@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
         "showMathPDF": (context) => const MyMathPDFView(),
         "showPatPDF": (context) => const MyLogicPatickPDFView(),
         "showFitPDF": (context) => const MyPhysicalFitPDFView(),
+        "showLogicChapter1Note": (context) => const MyLogicLectureChapter1View()
       },
     );
   }

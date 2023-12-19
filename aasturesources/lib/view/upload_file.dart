@@ -31,14 +31,16 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
             ButtonBar(
               buttonHeight: 100,
               children: [
-                Container(
-                  color: Colors.black,
-                  margin: const EdgeInsets.only(right: 130),
-                  child: TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      'Select File',
-                      style: TextStyle(color: Colors.white),
+                Center(
+                  child: Container(
+                    color: Colors.black,
+                    margin: const EdgeInsets.only(right: 130),
+                    child: TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'Select File',
+                        style: TextStyle(color: Colors.white),
+                      ),
                     ),
                   ),
                 )

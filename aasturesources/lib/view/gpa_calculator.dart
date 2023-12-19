@@ -10,6 +10,9 @@ class MyGPACalculatorView extends StatefulWidget {
 class _MyGPACalculatorViewState extends State<MyGPACalculatorView> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Scaffold(
+        body: Center(
+      child: Text('Under Construction'),
+    ));
   }
 }

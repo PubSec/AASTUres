@@ -16,9 +16,9 @@ int currentViewIndex = 0;
 
 final screens = [
   const MyPDFListView(),
-  const MyUploadFileView(),
   const MyLectureNoteView(),
   const MyGPACalculatorView(),
+  const MyUploadFileView(),
 ];
 
 class _MyHomeViewState extends State<MyHomeView> {
