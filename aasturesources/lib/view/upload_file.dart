@@ -12,6 +12,7 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
         centerTitle: true,
@@ -33,13 +34,13 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
               children: [
                 Center(
                   child: Container(
-                    color: Colors.black,
+                    color: Colors.white,
                     margin: const EdgeInsets.only(right: 130),
                     child: TextButton(
                       onPressed: () {},
                       child: const Text(
                         'Select File',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.black),
                       ),
                     ),
                   ),

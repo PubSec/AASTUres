@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:line_icons/line_icon.dart' as line;
 
 class MyGPACalculatorView extends StatefulWidget {
   const MyGPACalculatorView({super.key});
@@ -10,9 +11,18 @@ class MyGPACalculatorView extends StatefulWidget {
 class _MyGPACalculatorViewState extends State<MyGPACalculatorView> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-        body: Center(
-      child: Text('Under Construction'),
-    ));
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text(
+          'GPA Calculator',
+          style: TextStyle(color: Colors.white),
+        ),
+        leading: const line.LineIcon.accusoft(
+          color: Colors.white,
+        ),
+      ),
+    );
   }
 }
