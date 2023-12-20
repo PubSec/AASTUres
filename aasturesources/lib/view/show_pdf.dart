@@ -254,3 +254,33 @@ class _MyLogicLectureChapter1ViewState
     );
   }
 }
+
+class MyLogicLectureChapter2View extends StatefulWidget {
+  const MyLogicLectureChapter2View({super.key});
+
+  @override
+  State<MyLogicLectureChapter2View> createState() =>
+      _MyLogicLectureChapter2ViewState();
+}
+
+class _MyLogicLectureChapter2ViewState
+    extends State<MyLogicLectureChapter2View> {
+  final PdfViewerController _pdfViewerController = PdfViewerController();
+
+  @override
+  void initState() {
+    _pdfViewerController;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: SfPdfViewer.network(
+        'https://firebasestorage.googleapis.com/v0/b/aastumodulecloud.appspot.com/o/lecture_notes%2Flogic_lecture_note_2.pdf?alt=media&token=f2562446-585d-43b6-9aee-d7caa9d8ae3b',
+        controller: _pdfViewerController,
+      ),
+    );
+  }
+}

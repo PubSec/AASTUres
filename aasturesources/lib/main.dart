@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConnectionNotifier(
       connectionNotificationOptions: const ConnectionNotificationOptions(
-        disconnectedDuration: Duration(seconds: 50),
+        disconnectedDuration: Duration(seconds: 5),
         pauseConnectionListenerWhenAppInBackground: true,
       ),
       child: MaterialApp(
