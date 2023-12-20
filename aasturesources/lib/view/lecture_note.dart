@@ -19,16 +19,31 @@ class MyLectureNoteView extends StatelessWidget {
           size: 29,
         ),
       ),
-      body: Container(
-        margin: const EdgeInsets.all(20.0),
-        child: ListTile(
-          tileColor: Colors.white,
-          leading: const line.LineIcon.chalkboardTeacher(),
-          title: const Text('Logic Lecture Note Chapter 1 '),
-          onTap: () {
-            Navigator.of(context).pushNamed('showLogicChapter1Note');
-          },
-        ),
+      body: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.all(20.0),
+            child: ListTile(
+              tileColor: Colors.white,
+              leading: const line.LineIcon.chalkboardTeacher(),
+              title: const Text('Logic Lecture Note Chapter 1 '),
+              onTap: () {
+                Navigator.of(context).pushNamed('showLogicChapter1Note');
+              },
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.all(20.0),
+            child: ListTile(
+              tileColor: Colors.white,
+              leading: const line.LineIcon.chalkboardTeacher(),
+              title: const Text('Logic Lecture Note Chapter 2'),
+              onTap: () {
+                Navigator.of(context).pushNamed('showLogicChapter2Note');
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

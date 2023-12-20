@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+import 'package:line_icons/line_icon.dart' as line;
 
 class MyAnthroPDFView extends StatefulWidget {
   const MyAnthroPDFView({super.key});
@@ -266,6 +267,7 @@ class MyLogicLectureChapter2View extends StatefulWidget {
 class _MyLogicLectureChapter2ViewState
     extends State<MyLogicLectureChapter2View> {
   final PdfViewerController _pdfViewerController = PdfViewerController();
+  String? query;
 
   @override
   void initState() {
@@ -276,7 +278,14 @@ class _MyLogicLectureChapter2ViewState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: const line.LineIcon.searchengin(),
+            onPressed: () {},
+          )
+        ],
+      ),
       body: SfPdfViewer.network(
         'https://firebasestorage.googleapis.com/v0/b/aastumodulecloud.appspot.com/o/lecture_notes%2Flogic_lecture_note_2.pdf?alt=media&token=f2562446-585d-43b6-9aee-d7caa9d8ae3b',
         controller: _pdfViewerController,
