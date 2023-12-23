@@ -21,8 +21,9 @@ class MyLectureNoteView extends StatelessWidget {
       ),
       body: Column(
         children: [
+          const Row(),
           Container(
-            margin: const EdgeInsets.all(20.0),
+            margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             child: ListTile(
               tileColor: Colors.white,
               leading: const line.LineIcon.chalkboardTeacher(),
@@ -33,7 +34,7 @@ class MyLectureNoteView extends StatelessWidget {
             ),
           ),
           Container(
-            margin: const EdgeInsets.all(20.0),
+            margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
             child: ListTile(
               tileColor: Colors.white,
               leading: const line.LineIcon.chalkboardTeacher(),

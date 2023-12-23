@@ -12,6 +12,7 @@ class _MyPDFListViewState extends State<MyPDFListView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawerScrimColor: Colors.transparent,
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,

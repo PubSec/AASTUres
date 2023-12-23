@@ -27,8 +27,8 @@ class _MyHomeViewState extends State<MyHomeView> {
     return Scaffold(
       body: screens[currentViewIndex],
       bottomNavigationBar: NavigationBar(
-        indicatorColor: Colors.white,
-        backgroundColor: Colors.grey.shade900,
+        indicatorColor: const Color.fromARGB(255, 61, 238, 114),
+        backgroundColor: const Color.fromARGB(255, 33, 33, 33),
         height: 58,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
         animationDuration: const Duration(seconds: 2),

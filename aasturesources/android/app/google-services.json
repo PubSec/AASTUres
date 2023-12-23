@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "795094257242",
+    "project_id": "aastulife",
+    "storage_bucket": "aastulife.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:795094257242:android:331661e955c35bfe3c1263",
+        "android_client_info": {
+          "package_name": "en.limited.aasturesources"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCequzxO586LhKNe259t---nOvGkNQRiw0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

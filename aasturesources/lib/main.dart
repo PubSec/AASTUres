@@ -1,10 +1,12 @@
 import 'package:aasturesources/view/home_view.dart';
 import 'package:aasturesources/view/show_pdf.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:connection_notifier/connection_notifier.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -16,8 +18,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConnectionNotifier(
       connectionNotificationOptions: const ConnectionNotificationOptions(
-        disconnectedDuration: Duration(seconds: 5),
-        pauseConnectionListenerWhenAppInBackground: true,
+        disconnectedDuration: Duration(seconds: 2),
+        disconnectedBackgroundColor: Colors.black,
+        connectedTextStyle: TextStyle(color: Colors.white),
       ),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
