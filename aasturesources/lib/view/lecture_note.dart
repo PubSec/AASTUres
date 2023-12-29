@@ -1,50 +1,86 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart' as line;
+import 'package:path_provider/path_provider.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-class MyLectureNoteView extends StatelessWidget {
+class MyLectureNoteView extends StatefulWidget {
   const MyLectureNoteView({super.key});
+
+  @override
+  State<MyLectureNoteView> createState() => _MyLectureNoteViewState();
+}
+
+class _MyLectureNoteViewState extends State<MyLectureNoteView> {
+  late Future<ListResult> moduleFiles;
+  final PdfViewerController _pdfViewerController = PdfViewerController();
+
+  @override
+  void initState() {
+    moduleFiles = FirebaseStorage.instance.ref('/modules').listAll();
+    _pdfViewerController;
+    _textEditingController;
+    super.initState();
+  }
+
+  String? searchText;
+  final TextEditingController _textEditingController = TextEditingController();
+
+  Future downloadFiles(Reference ref) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File("${dir.path}/${ref.name}");
+
+    await ref.writeToFile(file);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
+        title: const Text('Lecture Notes'),
         backgroundColor: Colors.black,
-        title: const Text(
-          'Lecture Notes',
-          style: TextStyle(color: Colors.white),
-        ),
         leading: const line.LineIcon.accusoft(
-          color: Colors.white,
           size: 29,
+          color: Colors.white,
         ),
+        centerTitle: true,
       ),
-      body: Column(
-        children: [
-          const Row(),
-          Container(
-            margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-            child: ListTile(
-              tileColor: Colors.white,
-              leading: const line.LineIcon.chalkboardTeacher(),
-              title: const Text('Logic Lecture Note Chapter 1 '),
-              onTap: () {
-                Navigator.of(context).pushNamed('showLogicChapter1Note');
+      body: FutureBuilder(
+        future: moduleFiles,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final files = snapshot.data!.items;
+
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                final file = files[index];
+                return ListTile(
+                  title: Text(file.name),
+                  onTap: () {
+                    // showPDF();
+                  },
+                );
               },
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-            child: ListTile(
-              tileColor: Colors.white,
-              leading: const line.LineIcon.chalkboardTeacher(),
-              title: const Text('Logic Lecture Note Chapter 2'),
-              onTap: () {
-                Navigator.of(context).pushNamed('showLogicChapter2Note');
-              },
-            ),
-          ),
-        ],
+              itemCount: files.length,
+            );
+          } else if (snapshot.hasError) {
+            return const Center(
+              child: Text('An error occurred'),
+            );
+          } else {
+            return const Column(
+              children: [
+                Text(
+                  'Loading...',
+                  style: TextStyle(color: Colors.white),
+                ),
+                Center(child: CircularProgressIndicator())
+              ],
+            );
+          }
+        },
       ),
     );
   }

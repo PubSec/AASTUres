@@ -1,5 +1,9 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart' as line;
+import 'package:path_provider/path_provider.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class MyPDFListView extends StatefulWidget {
   const MyPDFListView({super.key});
@@ -8,11 +12,33 @@ class MyPDFListView extends StatefulWidget {
   State<MyPDFListView> createState() => _MyPDFListViewState();
 }
 
+
 class _MyPDFListViewState extends State<MyPDFListView> {
+  late Future<ListResult> moduleFiles;
+  final PdfViewerController _pdfViewerController = PdfViewerController();
+
+  @override
+  void initState() {
+    moduleFiles = FirebaseStorage.instance.ref('/modules').listAll();
+    _pdfViewerController;
+    _textEditingController;
+    super.initState();
+  }
+
+  String? searchText;
+  final TextEditingController _textEditingController = TextEditingController();
+
+  Future downloadFiles(Reference ref) async {
+    final dir = await getApplicationDocumentsDirectory();
+    final file = File("${dir.path}/${ref.name}");
+
+    await ref.writeToFile(file);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawerScrimColor: Colors.transparent,
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -22,99 +48,46 @@ class _MyPDFListViewState extends State<MyPDFListView> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              ListTile(
-                tileColor: Colors.white,
-                leading: const line.LineIcon.peopleCarry(),
-                title: const Text('Anthropology Module'),
-                onTap: () {
-                  Navigator.of(context).pushNamed("showAnthroPDF");
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              ListTile(
-                tileColor: Colors.white,
-                title: const Text('Communicative English Module'),
-                leading: const Icon(Icons.chat),
-                onTap: () {
-                  Navigator.of(context).pushNamed("showEnglishPDF");
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              ListTile(
-                tileColor: Colors.white,
-                title: const Text('General Pysychology'),
-                leading: const line.LineIcon.identificationBadge(),
-                onTap: () {
-                  Navigator.of(context).pushNamed("showPysPDF");
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              ListTile(
-                tileColor: Colors.white,
-                title: const Text('Geography'),
-                leading: const Icon(Icons.circle_outlined),
-                onTap: () {
-                  Navigator.of(context).pushNamed("showGeoPDF");
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              ListTile(
-                tileColor: Colors.white,
-                title: const Text('Logic and Critical Thinking'),
-                leading: const Icon(Icons.earbuds),
-                onTap: () {
-                  Navigator.of(context).pushNamed("showLogicPDF");
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              ListTile(
-                tileColor: Colors.white,
-                title: const Text('Patrick 2012'),
-                leading: const line.LineIcon.book(),
-                onTap: () {
-                  Navigator.of(context).pushNamed("showPatPDF");
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              ListTile(
-                tileColor: Colors.white,
-                title: const Text('Maths for Natural Science'),
-                leading: const line.LineIcon.calculator(),
-                onTap: () {
-                  Navigator.of(context).pushNamed("showMathPDF");
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              ListTile(
-                tileColor: Colors.white,
-                title: const Text('Physical Fitness'),
-                leading: const line.LineIcon.running(),
-                onTap: () {
-                  Navigator.of(context).pushNamed("showFitPDF");
-                },
-              ),
-            ],
-          ),
-        ),
+      body: FutureBuilder(
+        future: moduleFiles,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            final files = snapshot.data!.items;
+
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                final file = files[index];
+                return ListTile(
+                  title: Text(file.name),
+                  onTap: () {
+                    // showPDF();
+                  },
+                  trailing: IconButton(
+                    onPressed: () => downloadFiles(file),
+                    icon: const line.LineIcon.fileDownload(
+                      color: Colors.black,
+                    ),
+                  ),
+                );
+              },
+              itemCount: files.length,
+            );
+          } else if (snapshot.hasError) {
+            return const Center(
+              child: Text('An error occurred'),
+            );
+          } else {
+            return const Column(
+              children: [
+                Text(
+                  'Loading...',
+                  style: TextStyle(color: Colors.white),
+                ),
+                CircularProgressIndicator()
+              ],
+            );
+          }
+        },
       ),
     );
   }

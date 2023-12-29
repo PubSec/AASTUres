@@ -3,66 +3,42 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:line_icons/line_icon.dart' as line;
 
-class MyAnthroPDFView extends StatefulWidget {
-  const MyAnthroPDFView({super.key});
-
-  @override
-  State<MyAnthroPDFView> createState() => _MyAnthroPDFViewState();
-}
-
-class _MyAnthroPDFViewState extends State<MyAnthroPDFView> {
-  final PdfViewerController _pdfViewerController = PdfViewerController();
-
-  @override
-  void initState() {
-    _pdfViewerController;
-    _textEditingController;
-    super.initState();
-  }
-
-  String? searchText;
-  final TextEditingController _textEditingController = TextEditingController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              _pdfViewerController.previousPage();
-            },
-            icon: const line.LineIcon.backward(
-              color: Colors.black,
-            ),
-          ),
-          IconButton(
-            onPressed: () {
-              _pdfViewerController.nextPage();
-            },
-            icon: const line.LineIcon.forward(
-              color: Colors.black,
-            ),
-          ),
-          AnimSearchBar(
-            width: 210,
-            textController: _textEditingController,
-            onSuffixTap: () {
-              _textEditingController.clear();
-            },
-            onSubmitted: (String searchText) {
-              _pdfViewerController.searchText(_textEditingController.text);
-            },
-          )
-        ],
-      ),
-      body: SfPdfViewer.network(
-        'https://firebasestorage.googleapis.com/v0/b/aastumodulecloud.appspot.com/o/modules%2FFreshman_Anthropology_Anth_1012_Module_for_students_of_HLIs_of_Ethiopia.pdf?alt=media&token=9a7796a0-f50d-4546-8b44-c6bee0291b69',
-        controller: _pdfViewerController,
-      ),
-    );
-  }
-}
+// showPDF({required Path filePath, }) {
+//   return Scaffold(
+//     appBar: AppBar(
+//       actions: [
+//         IconButton(
+//           onPressed: () {
+//             _pdfViewerController.previousPage();
+//           },
+//           icon: const line.LineIcon.backward(
+//             color: Colors.black,
+//           ),
+//         ),
+//         IconButton(
+//           onPressed: () {
+//             _pdfViewerController.nextPage();
+//           },
+//           icon: const line.LineIcon.forward(
+//             color: Colors.black,
+//           ),
+//         ),
+//         AnimSearchBar(
+//           width: 210,
+//           textController: _textEditingController,
+//           onSuffixTap: () {},
+//           onSubmitted: (String searchText) {
+//             _pdfViewerController.searchText(_textEditingController.text);
+//           },
+//         )
+//       ],
+//     ),
+//     body: SfPdfViewer.file(
+//       File(filePath),
+//       controller: _pdfViewerController,
+//     ),
+//   );
+// }
 
 class MyEnglishPDFView extends StatefulWidget {
   const MyEnglishPDFView({super.key});

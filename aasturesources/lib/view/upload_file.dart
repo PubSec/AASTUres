@@ -53,43 +53,50 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
   }
 
   buildProgress() => StreamBuilder<TaskSnapshot>(
-      stream: uploadTask?.snapshotEvents,
-      builder: ((context, snapshot) {
-        if (snapshot.hasData) {
-          final data = snapshot.data!;
-          double progress = data.bytesTransferred / data.totalBytes;
-          return SizedBox(
-            height: 60,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                LinearProgressIndicator(
-                  value: progress,
-                  backgroundColor: Colors.grey,
-                  color: Colors.green,
-                ),
-                Center(
-                  child: Text(
-                    '${(100 * progress).roundToDouble()}%',
-                    style: const TextStyle(
-                      color: Colors.white,
-                    ),
+        stream: uploadTask?.snapshotEvents,
+        builder: ((context, snapshot) {
+          if (snapshot.hasData) {
+            final data = snapshot.data!;
+            double progress = data.bytesTransferred / data.totalBytes;
+            return SizedBox(
+              height: 60,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  LinearProgressIndicator(
+                    value: progress,
+                    backgroundColor: Colors.grey,
+                    color: Colors.green,
                   ),
-                )
-              ],
-            ),
-          );
-        } else {
-          return const SizedBox(
-            height: 60,
-          );
-        }
-      }));
+                  Center(
+                    child: Text(
+                      '${(100 * progress).roundToDouble()}%',
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            );
+          } else {
+            return const SizedBox(
+              height: 60,
+            );
+          }
+        }),
+      );
 
   @override
   Widget build(BuildContext context) {
-    final pickedFileName =
-        pickedFile != null ? pickedFile!.name : 'No File Picked ';
+    final pickedFileName = pickedFile != null
+        ? pickedFile!.name
+        : const Text(
+            'No files picked',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          );
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
@@ -125,7 +132,7 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
                         height: 50.0,
                       ),
                       Text(
-                        pickedFileName,
+                        '$pickedFileName',
                         style: const TextStyle(color: Colors.white),
                       ),
                     ],

@@ -1,10 +1,10 @@
 import 'package:aasturesources/view/home_view.dart';
 import 'package:aasturesources/view/show_pdf.dart';
+import 'package:connection_notifier/connection_notifier.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:connection_notifier/connection_notifier.dart';
 
-Future<void> main() async {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
@@ -18,20 +18,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConnectionNotifier(
       connectionNotificationOptions: const ConnectionNotificationOptions(
-        disconnectedDuration: Duration(seconds: 2),
         disconnectedBackgroundColor: Colors.black,
-        connectedTextStyle: TextStyle(color: Colors.white),
+        disconnectedDuration: Duration(seconds: 10),
       ),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'AASTU Resources',
+        title: 'Fresh Resources',
         theme: ThemeData(
           primaryColor: Colors.white,
           useMaterial3: true,
         ),
+        home: const MyHomeView(),
         routes: {
           "/": (context) => const MyHomeView(),
-          "showAnthroPDF": (context) => const MyAnthroPDFView(),
+          // "showAnthroPDF": (context) => const MyAnthroPDFView(),
           "showEnglishPDF": (context) => const MyEnglishPDFView(),
           "showPysPDF": (context) => const MyGeneralPyshoPDFView(),
           "showGeoPDF": (context) => const MyGeoPDFView(),
