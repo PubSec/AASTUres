@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +18,28 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
   UploadTask? uploadTask;
 
   Future selectFile() async {
-    final selectedFile = await FilePicker.platform.pickFiles();
+    final selectedFile =
+        await FilePicker.platform.pickFiles(allowMultiple: false);
 
     if (selectedFile == null) {
-      return;
+      // ignore: use_build_context_synchronously
+      return ScaffoldMessenger.of(context).showMaterialBanner(
+        MaterialBanner(
+          backgroundColor: Colors.black,
+          content: const Text(
+            'No files selected',
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+              },
+              icon: const Icon(Icons.close_rounded),
+            )
+          ],
+        ),
+      );
     }
 
     setState(() {
@@ -123,8 +143,8 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
                   child: Column(
                     children: [
                       Container(
-                        width: 100,
-                        height: 150,
+                        width: double.infinity,
+                        height: 100,
                         color: Colors.black45,
                         child: Image.file(File(pickedFile!.path!)),
                       ),
@@ -139,50 +159,54 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
                   ),
                 ),
               ),
-            ButtonBar(
-              buttonHeight: 100,
-              children: [
-                Center(
-                  child: Container(
-                    color: Colors.white,
-                    width: 150,
-                    margin: const EdgeInsets.only(
-                      top: 50,
-                      right: 100,
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        selectFile();
-                      },
-                      child: const Text(
-                        'Select File',
-                        style: TextStyle(color: Colors.black),
+            Center(
+              child: ButtonBar(
+                buttonHeight: 100,
+                children: [
+                  Center(
+                    child: Container(
+                      color: Colors.white,
+                      width: 150,
+                      margin: const EdgeInsets.only(
+                        top: 50,
+                        right: 100,
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          selectFile();
+                        },
+                        child: const Text(
+                          'Select File',
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
-            ButtonBar(
-              buttonHeight: 100,
-              children: [
-                Center(
-                  child: Container(
-                    width: 150,
-                    color: Colors.white,
-                    margin: const EdgeInsets.only(right: 100),
-                    child: TextButton(
-                      onPressed: () {
-                        uploadFile();
-                      },
-                      child: const Text(
-                        'Upload File',
-                        style: TextStyle(color: Colors.black),
+            Center(
+              child: ButtonBar(
+                buttonHeight: 100,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 150,
+                      color: Colors.white,
+                      margin: const EdgeInsets.only(right: 100),
+                      child: TextButton(
+                        onPressed: () {
+                          uploadFile();
+                        },
+                        child: const Text(
+                          'Upload File',
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             buildProgress(),
           ],

@@ -1,10 +1,14 @@
 import 'package:aasturesources/view/home_view.dart';
-import 'package:aasturesources/view/show_pdf.dart';
 import 'package:connection_notifier/connection_notifier.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'firebase_options.dart';
 
-void main()  {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -27,21 +31,6 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         home: const MyHomeView(),
-        routes: {
-          "/": (context) => const MyHomeView(),
-          // "showAnthroPDF": (context) => const MyAnthroPDFView(),
-          "showEnglishPDF": (context) => const MyEnglishPDFView(),
-          "showPysPDF": (context) => const MyGeneralPyshoPDFView(),
-          "showGeoPDF": (context) => const MyGeoPDFView(),
-          "showLogicPDF": (context) => const MyLogicPDFView(),
-          "showMathPDF": (context) => const MyMathPDFView(),
-          "showPatPDF": (context) => const MyLogicPatickPDFView(),
-          "showFitPDF": (context) => const MyPhysicalFitPDFView(),
-          "showLogicChapter1Note": (context) =>
-              const MyLogicLectureChapter1View(),
-          "showLogicChapter2Note": (context) =>
-              const MyLogicLectureChapter2View(),
-        },
       ),
     );
   }

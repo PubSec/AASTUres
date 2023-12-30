@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart' as line;
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-class MyPDFListView extends StatefulWidget {
-  const MyPDFListView({super.key});
+class MyModuleListView extends StatefulWidget {
+  const MyModuleListView({super.key});
 
   @override
-  State<MyPDFListView> createState() => _MyPDFListViewState();
+  State<MyModuleListView> createState() => _MyModuleListViewState();
 }
 
-class _MyPDFListViewState extends State<MyPDFListView> {
+class _MyModuleListViewState extends State<MyModuleListView> {
   late Future<ListResult> moduleFiles;
   final PdfViewerController _pdfViewerController = PdfViewerController();
 
@@ -49,7 +49,10 @@ class _MyPDFListViewState extends State<MyPDFListView> {
                 return ListTile(
                   title: Text(file.name),
                   onTap: () {
-                    // showPDF();
+                    SfPdfViewer.network(
+                      '${file.getDownloadURL()}',
+                      controller: _pdfViewerController,
+                    );
                   },
                 );
               },
@@ -57,17 +60,24 @@ class _MyPDFListViewState extends State<MyPDFListView> {
             );
           } else if (snapshot.hasError) {
             return const Center(
-              child: Text('An error occurred'),
+              child: Text(
+                'An error occurred',
+                style: TextStyle(color: Colors.white),
+              ),
             );
           } else {
-            return const Column(
-              children: [
-                Text(
-                  'Loading...',
-                  style: TextStyle(color: Colors.white),
-                ),
-                CircularProgressIndicator()
-              ],
+            return const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Loading...',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  CircularProgressIndicator()
+                ],
+              ),
             );
           }
         },

@@ -19,6 +19,7 @@ class _MyGPACalculatorViewState extends State<MyGPACalculatorView> {
           'GPA Calculator',
           style: TextStyle(color: Colors.white),
         ),
+        centerTitle: true,
         leading: const line.LineIcon.accusoft(
           size: 29,
           color: Colors.white,

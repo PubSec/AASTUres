@@ -37,6 +37,7 @@ class _MyLectureNoteViewState extends State<MyLectureNoteView> {
           color: Colors.white,
         ),
         centerTitle: true,
+        titleTextStyle: const TextStyle(color: Colors.white),
       ),
       body: FutureBuilder(
         future: moduleFiles,
@@ -58,17 +59,24 @@ class _MyLectureNoteViewState extends State<MyLectureNoteView> {
             );
           } else if (snapshot.hasError) {
             return const Center(
-              child: Text('An error occurred'),
+              child: Text('An error occurred',
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
             );
           } else {
-            return const Column(
-              children: [
-                Text(
-                  'Loading...',
-                  style: TextStyle(color: Colors.white),
-                ),
-                Center(child: CircularProgressIndicator())
-              ],
+            return const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'Loading...',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  Center(child: CircularProgressIndicator())
+                ],
+              ),
             );
           }
         },
