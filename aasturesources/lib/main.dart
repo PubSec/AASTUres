@@ -1,12 +1,10 @@
 import 'package:aasturesources/view/home_view.dart';
 import 'package:aasturesources/view/show_pdf.dart';
 import 'package:connection_notifier/connection_notifier.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
-void main() async {
+void main()  {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 

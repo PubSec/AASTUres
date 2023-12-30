@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:line_icons/line_icon.dart' as line;
 
+import '../utilities/funs.dart';
+
 class MyScheduleView extends StatefulWidget {
   const MyScheduleView({super.key});
 
@@ -60,7 +62,10 @@ class _MyScheduleViewState extends State<MyScheduleView> {
       body: SfPdfViewer.asset(
         'assets/schedule.pdf',
         controller: _pdfViewerController,
+        onDocumentLoadFailed:onDocumentLoadFailed() ,
+        onDocumentLoaded: onDocumentLoaded(context),
       ),
     );
   }
 }
+

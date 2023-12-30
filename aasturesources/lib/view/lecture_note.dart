@@ -1,8 +1,6 @@
-import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart' as line;
-import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class MyLectureNoteView extends StatefulWidget {
@@ -18,7 +16,7 @@ class _MyLectureNoteViewState extends State<MyLectureNoteView> {
 
   @override
   void initState() {
-    moduleFiles = FirebaseStorage.instance.ref('/modules').listAll();
+    moduleFiles = FirebaseStorage.instance.ref('/lecture_notes').listAll();
     _pdfViewerController;
     _textEditingController;
     super.initState();
@@ -26,13 +24,6 @@ class _MyLectureNoteViewState extends State<MyLectureNoteView> {
 
   String? searchText;
   final TextEditingController _textEditingController = TextEditingController();
-
-  Future downloadFiles(Reference ref) async {
-    final dir = await getApplicationDocumentsDirectory();
-    final file = File("${dir.path}/${ref.name}");
-
-    await ref.writeToFile(file);
-  }
 
   @override
   Widget build(BuildContext context) {

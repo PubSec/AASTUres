@@ -1,11 +1,11 @@
 import 'package:aasturesources/view/gpa_calculator.dart';
 import 'package:aasturesources/view/lecture_note.dart';
-import 'package:aasturesources/view/pdf_list_view.dart';
+import 'package:aasturesources/view/module_list_view.dart';
 import 'package:aasturesources/view/upload_file.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart' as line;
-
 import 'schedule_view.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class MyHomeView extends StatefulWidget {
   const MyHomeView({super.key});
@@ -17,7 +17,7 @@ class MyHomeView extends StatefulWidget {
 int currentViewIndex = 0;
 
 final screens = [
-  const MyPDFListView(),
+  const MyModuleListView(),
   const MyLectureNoteView(),
   const MyGPACalculatorView(),
   const MyUploadFileView(),
@@ -25,6 +25,12 @@ final screens = [
 ];
 
 class _MyHomeViewState extends State<MyHomeView> {
+  @override
+  void initState() {
+    Firebase.initializeApp();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
