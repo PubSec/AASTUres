@@ -1,5 +1,5 @@
 import 'package:aasturesources/view/gpa_calculator.dart';
-import 'package:aasturesources/view/lecture_note.dart';
+import 'package:aasturesources/view/lecture_note_list.dart';
 import 'package:aasturesources/view/module_list_view.dart';
 import 'package:aasturesources/view/upload_file.dart';
 import 'package:flutter/material.dart';
@@ -83,7 +83,7 @@ class _MyHomeViewState extends State<MyHomeView> {
               Icons.calendar_view_day_rounded,
               color: Colors.white,
             ),
-            selectedIcon: line.LineIcon.calendarWithDayFocus(),
+            selectedIcon: line.LineIcon.calendar(),
             label: 'Schedule',
             tooltip: 'Schedule ',
           ),

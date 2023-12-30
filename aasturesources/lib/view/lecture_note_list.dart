@@ -49,7 +49,15 @@ class _MyLectureNoteViewState extends State<MyLectureNoteView> {
               itemBuilder: (context, index) {
                 final file = files[index];
                 return ListTile(
-                  title: Text(file.name),
+                  leading: const line.LineIcon.chalkboardTeacher(
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    file.name,
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
                   onTap: () {
                     // showPDF();
                   },
@@ -59,24 +67,28 @@ class _MyLectureNoteViewState extends State<MyLectureNoteView> {
             );
           } else if (snapshot.hasError) {
             return const Center(
-              child: Text('An error occurred',
-                  style: TextStyle(
-                    color: Colors.white,
-                  )),
+              child: Text(
+                'An error occurred',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             );
           } else {
-            return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Loading...',
-                    style: TextStyle(color: Colors.white),
+            return const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Loading...',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
-                  Center(child: CircularProgressIndicator())
-                ],
-              ),
+                ),
+                Center(child: CircularProgressIndicator())
+              ],
             );
           }
         },

@@ -17,7 +17,9 @@ class _MyGPACalculatorViewState extends State<MyGPACalculatorView> {
         backgroundColor: Colors.black,
         title: const Text(
           'GPA Calculator',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(
+            color: Colors.white,
+          ),
         ),
         centerTitle: true,
         leading: const line.LineIcon.accusoft(

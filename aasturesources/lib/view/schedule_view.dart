@@ -45,7 +45,6 @@ class _MyScheduleViewState extends State<MyScheduleView> {
         'assets/schedule.pdf',
         controller: _pdfViewerController,
         onDocumentLoadFailed: onDocumentLoadFailed(),
-        currentSearchTextHighlightColor: Colors.greenAccent,
       ),
     );
   }

@@ -42,18 +42,23 @@ class _MyModuleListViewState extends State<MyModuleListView> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final files = snapshot.data!.items;
-
             return ListView.builder(
               itemBuilder: (context, index) {
                 final file = files[index];
-                return ListTile(
-                  title: Text(file.name),
-                  onTap: () {
-                    SfPdfViewer.network(
-                      '${file.getDownloadURL()}',
-                      controller: _pdfViewerController,
-                    );
-                  },
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ListTile(
+                    tileColor: Colors.white,
+                    title: Text(
+                      file.name,
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    onTap: () {
+                      SfPdfViewer.network(
+                        '${file.getDownloadURL()}',
+                      );
+                    },
+                  ),
                 );
               },
               itemCount: files.length,
@@ -62,22 +67,26 @@ class _MyModuleListViewState extends State<MyModuleListView> {
             return const Center(
               child: Text(
                 'An error occurred',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             );
           } else {
-            return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Loading...',
-                    style: TextStyle(color: Colors.white),
+            return const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Loading...',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
-                  CircularProgressIndicator()
-                ],
-              ),
+                ),
+                Center(child: CircularProgressIndicator()),
+              ],
             );
           }
         },
