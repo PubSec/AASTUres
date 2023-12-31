@@ -4,7 +4,6 @@ import 'package:aasturesources/view/module_list_view.dart';
 import 'package:aasturesources/view/upload_file.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart' as line;
-import 'schedule_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 class MyHomeView extends StatefulWidget {
@@ -21,7 +20,6 @@ final screens = [
   const MyLectureNoteView(),
   const MyGPACalculatorView(),
   const MyUploadFileView(),
-  const MyScheduleView(),
 ];
 
 class _MyHomeViewState extends State<MyHomeView> {
@@ -77,15 +75,6 @@ class _MyHomeViewState extends State<MyHomeView> {
             selectedIcon: line.LineIcon.upload(),
             label: 'Upload',
             tooltip: 'Upload ',
-          ),
-          NavigationDestination(
-            icon: Icon(
-              Icons.calendar_view_day_rounded,
-              color: Colors.white,
-            ),
-            selectedIcon: line.LineIcon.calendar(),
-            label: 'Schedule',
-            tooltip: 'Schedule ',
           ),
         ],
         selectedIndex: currentViewIndex,

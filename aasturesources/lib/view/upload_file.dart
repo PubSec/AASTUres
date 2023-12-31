@@ -18,28 +18,12 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
   UploadTask? uploadTask;
 
   Future selectFile() async {
-    final selectedFile =
-        await FilePicker.platform.pickFiles(allowMultiple: false);
+    final selectedFile = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+    );
 
     if (selectedFile == null) {
-      // ignore: use_build_context_synchronously
-      return ScaffoldMessenger.of(context).showMaterialBanner(
-        MaterialBanner(
-          backgroundColor: Colors.black,
-          content: const Text(
-            'No files selected',
-            style: TextStyle(color: Colors.white),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
-              },
-              icon: const Icon(Icons.close_rounded),
-            )
-          ],
-        ),
-      );
+      return;
     }
 
     setState(() {
@@ -52,8 +36,10 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
     final file = File(pickedFile!.path!);
     try {
       final ref = FirebaseStorage.instance.ref().child(path);
+      ref.putFile(file);
+
       setState(() {
-        final uploadTask = ref.putFile(file);
+        uploadTask = ref.putFile(file);
       });
     } on FirebaseException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -64,9 +50,22 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
         ),
       );
     }
-    final snapshot = uploadTask!.whenComplete(() {});
-    // final urlDownload = await snapshot.ref.getProperty;
 
+    final snapshot = await uploadTask!.whenComplete(() {
+      setState(() {
+        uploadTask = null;
+      });
+    });
+
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    // ignore: avoid_print
+    print('Download Link: $urlDownload');
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Upload Successful'),
+      ),
+    );
     setState(() {
       uploadTask = null;
     });
@@ -79,7 +78,7 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
             final data = snapshot.data!;
             double progress = data.bytesTransferred / data.totalBytes;
             return SizedBox(
-              height: 60,
+              height: 50,
               child: Stack(
                 fit: StackFit.expand,
                 children: [
@@ -90,7 +89,7 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
                   ),
                   Center(
                     child: Text(
-                      '${(100 * progress).roundToDouble()}%',
+                      '${(100 * progress).ceilToDouble()}%',
                       style: const TextStyle(
                         color: Colors.white,
                       ),
@@ -101,7 +100,7 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
             );
           } else {
             return const SizedBox(
-              height: 60,
+              height: 80,
             );
           }
         }),
@@ -134,9 +133,18 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
         ),
       ),
       body: Container(
-        margin: const EdgeInsets.only(top: 0),
+        margin: const EdgeInsets.only(top: 45),
         child: Column(
           children: [
+            const Padding(
+              padding: EdgeInsets.only(left: 50.0, right: 30),
+              child: Text(
+                'Class Represetatives can upload files to be view in Lecture Notes tab.',
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
             if (pickedFile != null)
               SingleChildScrollView(
                 child: Expanded(
@@ -144,16 +152,27 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
                     children: [
                       Container(
                         width: double.infinity,
-                        height: 100,
+                        height: 120,
                         color: Colors.black45,
-                        child: Image.file(File(pickedFile!.path!)),
+                        child: Image.file(
+                          File(pickedFile!.path!),
+                          errorBuilder: (context, error, stackTrace) {
+                            return Image.asset('assets/pics/image.png');
+                          },
+                        ),
                       ),
                       const SizedBox(
-                        height: 50.0,
+                        height: 20.0,
                       ),
-                      Text(
-                        '$pickedFileName',
-                        style: const TextStyle(color: Colors.white),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 40, right: 20),
+                        child: Text(
+                          '$pickedFileName',
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          style: const TextStyle(color: Colors.white),
+                        ),
                       ),
                     ],
                   ),

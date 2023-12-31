@@ -1,7 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'package:aasturesources/view/view_pdf.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart' as line;
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class MyModuleListView extends StatefulWidget {
   const MyModuleListView({super.key});
@@ -12,18 +14,28 @@ class MyModuleListView extends StatefulWidget {
 
 class _MyModuleListViewState extends State<MyModuleListView> {
   late Future<ListResult> moduleFiles;
-  final PdfViewerController _pdfViewerController = PdfViewerController();
 
   @override
   void initState() {
     moduleFiles = FirebaseStorage.instance.ref('/modules').listAll();
-    _pdfViewerController;
-    _textEditingController;
     super.initState();
   }
 
-  String? searchText;
-  final TextEditingController _textEditingController = TextEditingController();
+  Future<void> downloadUrlFun({required String nameofModule}) async {
+    String downloadUrl = await FirebaseStorage.instance
+        .ref('/modules/$nameofModule')
+        .getDownloadURL();
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) {
+          return MyPDFView(
+            pdfUrl: downloadUrl,
+            pdfTitle: nameofModule,
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,17 +58,17 @@ class _MyModuleListViewState extends State<MyModuleListView> {
               itemBuilder: (context, index) {
                 final file = files[index];
                 return Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding:
+                      const EdgeInsets.only(left: 20, right: 20, bottom: 10),
                   child: ListTile(
+                    visualDensity: VisualDensity.comfortable,
                     tileColor: Colors.white,
                     title: Text(
                       file.name,
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.black),
                     ),
                     onTap: () {
-                      SfPdfViewer.network(
-                        '${file.getDownloadURL()}',
-                      );
+                      downloadUrlFun(nameofModule: file.name);
                     },
                   ),
                 );
@@ -84,6 +96,9 @@ class _MyModuleListViewState extends State<MyModuleListView> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
+                ),
+                SizedBox(
+                  height: 15,
                 ),
                 Center(child: CircularProgressIndicator()),
               ],

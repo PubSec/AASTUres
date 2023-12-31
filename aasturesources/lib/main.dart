@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primaryColor: Colors.white,
           useMaterial3: true,
-          fontFamily: 'LemonMilk',
+          fontFamily: 'CoolVetica',
         ),
         home: const MyHomeView(),
       ),

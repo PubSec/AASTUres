@@ -27,6 +27,12 @@ class _MyGPACalculatorViewState extends State<MyGPACalculatorView> {
           color: Colors.white,
         ),
       ),
+      body: const Center(
+        child: Text(
+          'Coming Soon...',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
     );
   }
 }
