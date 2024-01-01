@@ -14,8 +14,15 @@ class MyUploadFileView extends StatefulWidget {
 }
 
 class _MyUploadFileViewState extends State<MyUploadFileView> {
+  final TextEditingController _controller = TextEditingController();
   PlatformFile? pickedFile;
   UploadTask? uploadTask;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller;
+  }
 
   Future selectFile() async {
     final selectedFile = await FilePicker.platform.pickFiles(
@@ -31,8 +38,8 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
     });
   }
 
-  Future uploadFile() async {
-    final path = 'upload_from_app/${pickedFile!.name}';
+  Future uploadFile({required String section}) async {
+    final path = 'lecture_notes/${pickedFile!.name}   Section: $section';
     final file = File(pickedFile!.path!);
     try {
       final ref = FirebaseStorage.instance.ref().child(path);
@@ -89,7 +96,7 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
                   ),
                   Center(
                     child: Text(
-                      '${(100 * progress).ceilToDouble()}%',
+                      '${(100 * progress).floorToDouble()}%',
                       style: const TextStyle(
                         color: Colors.white,
                       ),
@@ -132,103 +139,144 @@ class _MyUploadFileViewState extends State<MyUploadFileView> {
           color: Colors.white,
         ),
       ),
-      body: Container(
-        margin: const EdgeInsets.only(top: 45),
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(left: 50.0, right: 30),
-              child: Text(
-                'Class Represetatives can upload files to be view in Lecture Notes tab.',
-                style: TextStyle(
-                  color: Colors.white,
+      body: SingleChildScrollView(
+        child: Container(
+          margin: const EdgeInsets.only(top: 45),
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 50.0, right: 30),
+                child: Text(
+                  'Class Represetatives can upload files to be view in Lecture Notes tab. Please change the file name to something appropriate. ',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
-            ),
-            if (pickedFile != null)
-              SingleChildScrollView(
-                child: Expanded(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        height: 120,
-                        color: Colors.black45,
-                        child: Image.file(
-                          File(pickedFile!.path!),
-                          errorBuilder: (context, error, stackTrace) {
-                            return Image.asset('assets/pics/image.png');
-                          },
+              if (pickedFile != null)
+                SingleChildScrollView(
+                  child: Expanded(
+                    child: Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          height: 120,
+                          color: Colors.black45,
+                          child: Image.file(
+                            File(pickedFile!.path!),
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset('assets/pics/image.png');
+                            },
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 20.0,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 40, right: 20),
-                        child: Text(
-                          '$pickedFileName',
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          style: const TextStyle(color: Colors.white),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
+                        Text('${pickedFile!.bytes}'),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 40, right: 20),
+                          child: Text(
+                            '$pickedFileName',
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              Row(
+                children: [
+                  ButtonBar(
+                    buttonHeight: 100,
+                    children: [
+                      Center(
+                        child: Container(
+                          color: Colors.white,
+                          width: 150,
+                          margin: const EdgeInsets.only(
+                            left: 20,
+                            top: 50,
+                          ),
+                          child: TextButton(
+                            onPressed: () {
+                              selectFile();
+                            },
+                            child: const Text(
+                              'Select File',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  ButtonBar(
+                    buttonHeight: 50,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 150,
+                          color: Colors.white,
+                          margin: const EdgeInsets.only(top: 50),
+                          child: TextButton(
+                            onPressed: () {
+                              if (_controller.text.isEmpty) {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text(
+                                        'Please enter section number'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: const Text('Ok'),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                uploadFile(section: _controller.text);
+                              }
+                            },
+                            child: const Text(
+                              'Upload File',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
+                ],
+              ),
+              SizedBox(
+                height: 100,
+                width: 150,
+                child: TextField(
+                  controller: _controller,
+                  style: const TextStyle(color: Colors.black),
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    errorStyle: TextStyle(color: Colors.red),
+                    hintText: 'Section Number',
+                    hintStyle: TextStyle(
+                      color: Colors.black38,
+                      fontSize: 12,
+                      height: 5,
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                  ),
                 ),
               ),
-            Center(
-              child: ButtonBar(
-                buttonHeight: 100,
-                children: [
-                  Center(
-                    child: Container(
-                      color: Colors.white,
-                      width: 150,
-                      margin: const EdgeInsets.only(
-                        top: 50,
-                        right: 100,
-                      ),
-                      child: TextButton(
-                        onPressed: () {
-                          selectFile();
-                        },
-                        child: const Text(
-                          'Select File',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Center(
-              child: ButtonBar(
-                buttonHeight: 100,
-                children: [
-                  Center(
-                    child: Container(
-                      width: 150,
-                      color: Colors.white,
-                      margin: const EdgeInsets.only(right: 100),
-                      child: TextButton(
-                        onPressed: () {
-                          uploadFile();
-                        },
-                        child: const Text(
-                          'Upload File',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            buildProgress(),
-          ],
+              buildProgress(),
+            ],
+          ),
         ),
       ),
     );
