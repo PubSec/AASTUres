@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+// import 'package:aasturesources/consts/permissions_handler.dart';
+import 'package:aasturesources/consts/shimmer_effect.dart';
 import 'package:aasturesources/view/view_pdf.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +20,22 @@ class _MyModuleListViewState extends State<MyModuleListView> {
   @override
   void initState() {
     moduleFiles = FirebaseStorage.instance.ref('/modules').listAll();
+    // checkPermission();
     super.initState();
   }
+
+  // bool isPermission = false;
+  // var checkAllPermissions = CheckPermission();
+
+  // checkPermission() {
+  //   bool permission = checkAllPermissions.isStoragePermission();
+
+  //   if (permission) {
+  //     setState(() {
+  //       isPermission = true;
+  //     });
+  //   }
+  // }
 
   Future<void> downloadUrlFun({required String nameofModule}) async {
     String downloadUrl = await FirebaseStorage.instance
@@ -42,7 +58,7 @@ class _MyModuleListViewState extends State<MyModuleListView> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.transparent,
         title: const line.LineIcon.accusoft(
           size: 29,
           color: Colors.white,
@@ -61,8 +77,12 @@ class _MyModuleListViewState extends State<MyModuleListView> {
                   padding:
                       const EdgeInsets.only(left: 20, right: 20, bottom: 10),
                   child: ListTile(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
                     visualDensity: VisualDensity.comfortable,
                     tileColor: Colors.white,
+                    trailing: IconButton(
+                        onPressed: () {}, icon: const Icon(Icons.download)),
                     title: Text(
                       file.name,
                       style: const TextStyle(color: Colors.black),
@@ -86,22 +106,12 @@ class _MyModuleListViewState extends State<MyModuleListView> {
               ),
             );
           } else {
-            return const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Loading...',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Center(child: CircularProgressIndicator()),
-              ],
+            return ListView.separated(
+              itemBuilder: ((context, index) => const ShimmerEffectView()),
+              separatorBuilder: (context, index) => const SizedBox(
+                height: 13,
+              ),
+              itemCount: 10,
             );
           }
         },

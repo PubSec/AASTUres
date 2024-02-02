@@ -1,7 +1,6 @@
 import 'package:aasturesources/view/gpa_calculator.dart';
 import 'package:aasturesources/view/lecture_note_list.dart';
 import 'package:aasturesources/view/module_list_view.dart';
-import 'package:aasturesources/view/upload_file.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart' as line;
 import 'package:firebase_core/firebase_core.dart';
@@ -19,7 +18,6 @@ final screens = [
   const MyModuleListView(),
   const MyLectureNoteView(),
   const MyGPACalculatorView(),
-  const MyUploadFileView(),
 ];
 
 class _MyHomeViewState extends State<MyHomeView> {
@@ -32,6 +30,48 @@ class _MyHomeViewState extends State<MyHomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        backgroundColor: Colors.transparent.withOpacity(0.8),
+        child: Column(
+          children: [
+            Container(
+              height: 250,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: AssetImage(
+                    'assets/pics/appstore.png',
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 18.0,
+            ),
+            ListTile(
+              title: const Text(
+                'Update',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                Navigator.of(context).pushNamed('showUpdateView');
+              },
+            ),
+            const Divider(),
+            ListTile(
+              title: const Text(
+                'About Me',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                Navigator.of(context).pushNamed('showAboutMeView');
+              },
+            ),
+            const Divider()
+          ],
+        ),
+      ),
       body: screens[currentViewIndex],
       bottomNavigationBar: NavigationBar(
         indicatorColor: const Color.fromARGB(255, 61, 238, 114),
@@ -66,15 +106,6 @@ class _MyHomeViewState extends State<MyHomeView> {
             selectedIcon: Icon(Icons.calculate),
             label: 'GPA Calculator',
             tooltip: 'GPA Calculator',
-          ),
-          NavigationDestination(
-            icon: Icon(
-              Icons.upload,
-              color: Colors.white,
-            ),
-            selectedIcon: line.LineIcon.upload(),
-            label: 'Upload',
-            tooltip: 'Upload ',
           ),
         ],
         selectedIndex: currentViewIndex,
