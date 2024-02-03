@@ -230,18 +230,17 @@ class _MyLectureNoteViewState extends State<MyLectureNoteView> {
                   children: [
                     // onpressed select file.
                     ListTile(
-                      tileColor: Colors.white,
                       leading: const line.LineIcon.bookOpen(),
                       onTap: () {
                         selectFile();
                       },
                       title: const Text(
                         'Select File',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
+                    const Divider(),
                     ListTile(
-                      tileColor: Colors.white,
                       leading: const line.LineIcon.upload(),
                       onTap: () {
                         if (sectionNumber == null || sectionNumber == '') {
@@ -270,9 +269,10 @@ class _MyLectureNoteViewState extends State<MyLectureNoteView> {
                       },
                       title: const Text(
                         'Upload File',
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(color: Colors.white),
                       ),
                     ),
+                    const Divider(),
                     DropdownMenu(
                       textStyle: const TextStyle(color: Colors.white),
                       width: 350,
