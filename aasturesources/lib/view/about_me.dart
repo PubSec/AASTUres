@@ -15,12 +15,13 @@ class _MyAboutMeViewState extends State<MyAboutMeView> {
 
   @override
   void initState() {
-    _tapGestureRecognizer = TapGestureRecognizer()..onTap = _handleTap;
+    _tapGestureRecognizer = TapGestureRecognizer()
+      ..onTap = _handleTap as GestureTapCallback?;
     super.initState();
   }
 
-  _handleTap() async {
-    final Uri url = Uri.parse('https://t.me/PubSecOfficial');
+  _handleTap({required urlLink}) async {
+    final Uri url = Uri.parse(urlLink);
     if (await canLaunchUrl(url)) {
       launchUrl(url);
     } else {
@@ -113,15 +114,40 @@ class _MyAboutMeViewState extends State<MyAboutMeView> {
                   ],
                 ),
               ),
-              CircleAvatar(
-                backgroundColor: Colors.black,
-                child: IconButton(
-                    onPressed: () async {
-                      await _handleTap();
-                    },
-                    icon: const line.LineIcon.telegramPlane(
-                      color: Colors.white,
-                    )),
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 100,
+                  ),
+                  CircleAvatar(
+                    backgroundColor: Colors.black,
+                    child: IconButton(
+                      onPressed: () async {
+                        await _handleTap(
+                            urlLink: 'https://t.me/PubSecOfficial');
+                      },
+                      icon: const line.LineIcon.telegramPlane(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  CircleAvatar(
+                    backgroundColor: Colors.black,
+                    child: IconButton(
+                      onPressed: () async {
+                        await _handleTap(
+                            urlLink:
+                                'https://apkpure.net/fresh-resrc/en.limited.aastures');
+                      },
+                      icon: const line.LineIcon.android(
+                        color: Colors.white,
+                      ),
+                    ),
+                  )
+                ],
               )
             ],
           ),

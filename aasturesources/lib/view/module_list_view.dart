@@ -1,11 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
-// import 'package:aasturesources/consts/permissions_handler.dart';
+import 'dart:convert';
 import 'package:aasturesources/consts/shimmer_effect.dart';
-import 'package:aasturesources/view/view_pdf.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:line_icons/line_icon.dart' as line;
+import 'package:open_file/open_file.dart';
 
 class MyModuleListView extends StatefulWidget {
   const MyModuleListView({super.key});
@@ -15,44 +15,6 @@ class MyModuleListView extends StatefulWidget {
 }
 
 class _MyModuleListViewState extends State<MyModuleListView> {
-  late Future<ListResult> moduleFiles;
-
-  @override
-  void initState() {
-    moduleFiles = FirebaseStorage.instance.ref('/modules').listAll();
-    // checkPermission();
-    super.initState();
-  }
-
-  // bool isPermission = false;
-  // var checkAllPermissions = CheckPermission();
-
-  // checkPermission() {
-  //   bool permission = checkAllPermissions.isStoragePermission();
-
-  //   if (permission) {
-  //     setState(() {
-  //       isPermission = true;
-  //     });
-  //   }
-  // }
-
-  Future<void> downloadUrlFun({required String nameofModule}) async {
-    String downloadUrl = await FirebaseStorage.instance
-        .ref('/modules/$nameofModule')
-        .getDownloadURL();
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) {
-          return MyPDFView(
-            pdfUrl: downloadUrl,
-            pdfTitle: nameofModule,
-          );
-        },
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,54 +28,59 @@ class _MyModuleListViewState extends State<MyModuleListView> {
         centerTitle: true,
       ),
       body: FutureBuilder(
-        future: moduleFiles,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final files = snapshot.data!.items;
-            return ListView.builder(
-              itemBuilder: (context, index) {
-                final file = files[index];
-                return Padding(
-                  padding:
-                      const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-                  child: ListTile(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
-                    visualDensity: VisualDensity.comfortable,
+        future: DefaultAssetBundle.of(context).loadString('AssetManifest.json'),
+        builder: (context, item) {
+          if (item.hasData) {
+            Map? jsonMap = json.decode(item.data!);
+            List? pdfs = jsonMap?.keys
+                .where((element) => element.endsWith(".pdf"))
+                .toList();
+            // if you only have the same kind of file use
+            // List? pdfs = jsonMap?.keys.toList();
+            return Container(
+              padding: const EdgeInsets.only(
+                left: 20,
+                right: 20,
+                top: 10,
+              ),
+              child: ListView.separated(
+                itemCount: pdfs!.length,
+                itemBuilder: (context, index) {
+                  var path = pdfs[index].toString();
+                  var title = path.split("/").last.toString();
+                  title = title.replaceAll("%20", '');
+                  title = title.split(".").first;
+                  return ListTile(
                     tileColor: Colors.white,
-                    trailing: IconButton(
-                        onPressed: () {}, icon: const Icon(Icons.download)),
-                    title: Text(
-                      file.name,
-                      style: const TextStyle(color: Colors.black),
-                    ),
-                    onTap: () {
-                      downloadUrlFun(nameofModule: file.name);
+                    title: Text(title),
+                    onTap: () async {
+                      await OpenFile.open(path);
                     },
-                  ),
-                );
-              },
-              itemCount: files.length,
-            );
-          } else if (snapshot.hasError) {
-            return const Center(
-              child: Text(
-                'An error occurred',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+                    onLongPress: () => HapticFeedback.vibrate(),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  );
+                },
+                separatorBuilder: (BuildContext context, int index) {
+                  return const SizedBox(
+                    height: 10,
+                  );
+                },
               ),
             );
           } else {
-            return ListView.separated(
-              itemBuilder: ((context, index) => const ShimmerEffectView()),
-              separatorBuilder: (context, index) => const SizedBox(
-                height: 13,
+            const Center(
+              child: CircularProgressIndicator(
+                color: Colors.white,
               ),
-              itemCount: 10,
             );
           }
+          return ListView.separated(
+            itemBuilder: (context, index) => const ShimmerEffectView(),
+            separatorBuilder: (context, index) => const SizedBox(height: 13.0),
+            itemCount: 7,
+          );
         },
       ),
     );

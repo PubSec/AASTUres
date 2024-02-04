@@ -60,6 +60,7 @@ class _MyLectureNoteViewState extends State<MyLectureNoteView> {
     } on FirebaseException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          behavior: SnackBarBehavior.floating,
           content: Text(
             e.toString(),
           ),
@@ -78,7 +79,9 @@ class _MyLectureNoteViewState extends State<MyLectureNoteView> {
     print('Download Link: $urlDownload');
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
+        behavior: SnackBarBehavior.floating,
         content: Text('Upload Successful'),
+        backgroundColor: Colors.green,
       ),
     );
     setState(() {
@@ -264,7 +267,9 @@ class _MyLectureNoteViewState extends State<MyLectureNoteView> {
                           uploadFile(section: sectionNumber!);
                           Navigator.of(context).pop();
                           ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Uploading')));
+                              const SnackBar(
+                                  behavior: SnackBarBehavior.floating,
+                                  content: Text('Uploading')));
                         }
                       },
                       title: const Text(

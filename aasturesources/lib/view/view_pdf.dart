@@ -71,7 +71,6 @@ class _MyPDFViewState extends State<MyPDFView> {
       body: SfPdfViewer.network(
         widget.pdfUrl,
         controller: _pdfViewerController,
-        canShowScrollHead: false,
         onDocumentLoadFailed: (details) {
           const Text('Failed to load file.');
         },
